@@ -85,9 +85,26 @@ export const authCheckUserLogged = async (req: Request, res: Response) => {
   if (!token) return res.status(200).json({ logged: false });
 
   try {
-    jwt.verify(token, JWT_SECRET_KEY);
-    return res.status(200).json({ logged: true });
+    const decoded = jwt.verify(token, JWT_SECRET_KEY);
+    return res.status(200).json({ logged: true, userDecoded: decoded });
   } catch (error) {
     return res.status(200).json({ logged: false });
+  }
+};
+
+export const authLogout = async (req: Request, res: Response) => {
+  try {
+    const serializedToken = serialize("token", "", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "produciton",
+      sameSite: "strict",
+      maxAge: 0,
+      path: "/",
+    });
+    res.setHeader("Set-Cookie", serializedToken);
+
+    return res.status(200).json({ message: "Logout succesfully." });
+  } catch (error) {
+    return res.status(500).json({ message: "Logout error." });
   }
 };

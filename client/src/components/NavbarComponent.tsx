@@ -1,6 +1,31 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import AppContext from "../context/AppContext";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 function NavbarComponent() {
+  const { contextData, handleContextData } = useContext(AppContext);
+  const navigate = useNavigate();
+
+  const logout = async () => {
+    try {
+      const { data } = await axios.get("/api/auth/logout");
+      toast.success(data.message);
+      handleContextData({
+        logged: false,
+        user: {
+          username: "",
+        },
+      });
+      navigate("/");
+    } catch (error: any) {
+      if (error.response.data.message) {
+        toast.error(error.response.data.message);
+      }
+    }
+  };
+
   return (
     <nav className="navbar navbar-expand-lg bg-light">
       <div className="container-fluid">
@@ -20,16 +45,28 @@ function NavbarComponent() {
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto">
-            <li className="nav-item">
-              <Link to="/login" className="nav-link">
-                <button className="btn btn-primary">INICIAR SESIÓN</button>
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to="/register" className="nav-link">
-                <button className="btn btn-info">REGISTRARSE</button>
-              </Link>
-            </li>
+            {contextData.logged === false ? (
+              <>
+                <li className="nav-item">
+                  <Link to="/login" className="nav-link">
+                    <button className="btn btn-primary">INICIAR SESIÓN</button>
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/register" className="nav-link">
+                    <button className="btn btn-info">REGISTRARSE</button>
+                  </Link>
+                </li>
+              </>
+            ) : (
+              <>
+                <li className="nav-item">
+                  <button className="btn btn-danger" onClick={logout}>
+                    CERRAR SESIÓN
+                  </button>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>

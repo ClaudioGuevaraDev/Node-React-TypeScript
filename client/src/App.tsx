@@ -11,22 +11,25 @@ import RegisterPage from "./pages/RegisterPage";
 
 // Components
 import NavbarComponent from "./components/NavbarComponent";
+import AppProvider from "./context/AppProvider";
 
 function App() {
   return (
-    <>
-      <BrowserRouter>
-        <NavbarComponent />
+    <AppProvider>
+      <>
+        <BrowserRouter>
+          <NavbarComponent />
 
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/dashboard" element={<DashboardPage />} />
-        </Routes>
-      </BrowserRouter>
-      <Toaster />
-    </>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
+          </Routes>
+        </BrowserRouter>
+        <Toaster />
+      </>
+    </AppProvider>
   );
 }
 

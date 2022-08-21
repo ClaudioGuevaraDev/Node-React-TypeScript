@@ -1,7 +1,9 @@
+import useCheckUserLogged from "../hooks/useCheckUserLogged";
+
 function HomePage() {
-  return (
-    <h1>Home Page</h1>
-  );
+  useCheckUserLogged({ section: "home" });
+
+  return <h1>Home Page</h1>;
 }
 
 export default HomePage;
