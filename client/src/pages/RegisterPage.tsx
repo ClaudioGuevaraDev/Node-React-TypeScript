@@ -21,12 +21,12 @@ function RegisterPage() {
       navigate("/login");
     } catch (error: any) {
       if (error.response.data.message) toast.error(error.response.data.message);
+      setUser({
+        username: "",
+        email: "",
+        password: "",
+      });
     }
-    setUser({
-      username: "",
-      email: "",
-      password: "",
-    });
   };
 
   return (

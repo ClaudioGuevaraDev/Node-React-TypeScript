@@ -1,6 +1,11 @@
 import { Request, Response } from "express";
+import jwt from "jsonwebtoken";
+import { serialize } from "cookie";
+
 import { prisma } from "../db/prisma";
+import { comparePassword } from "../utils/comparePassword";
 import { encryptPassword } from "../utils/encryptPassword";
+import { JWT_SECRET_KEY } from "../config";
 
 export const authRegister = async (req: Request, res: Response) => {
   const { username, email, password } = req.body;
@@ -30,8 +35,46 @@ export const authRegister = async (req: Request, res: Response) => {
       },
     });
 
-    res.status(201).json({ message: "User register success." });
+    return res.status(201).json({ message: "User register success." });
   } catch (error) {
     return res.status(500).json({ message: "Error to register user." });
+  }
+};
+
+export const authLogin = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+
+  const userFound = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  });
+
+  if (!userFound) return res.status(401).json({ message: "Login error." });
+
+  if ((await comparePassword(password, userFound.password)) === false)
+    return res.status(401).json({ message: "Login error." });
+
+  try {
+    const token = jwt.sign(
+      {
+        id: userFound.id,
+        username: userFound.username,
+      },
+      JWT_SECRET_KEY
+    );
+
+    const serializedToken = serialize("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60,
+      path: "/",
+    });
+    res.setHeader("Set-Cookie", serializedToken);
+
+    return res.status(200).json({ message: "Login successfully." });
+  } catch (error) {
+    return res.status(401).json({ message: "Login error." });
   }
 };
