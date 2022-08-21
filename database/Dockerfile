@@ -1,0 +1,4 @@
+FROM mysql
+
+ENV MYSQL_ROOT_PASSWORD = claudio
+ENV MYSQL_DATABASE = example
