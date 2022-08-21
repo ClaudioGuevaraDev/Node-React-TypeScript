@@ -61,9 +61,16 @@ function NavbarComponent() {
             ) : (
               <>
                 <li className="nav-item">
-                  <button className="btn btn-danger" onClick={logout}>
-                    CERRAR SESIÓN
-                  </button>
+                  <Link to="/dashboard" className="nav-link">
+                    <button className="btn btn-warning">Dashboard</button>
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <span className="nav-link">
+                    <button className="btn btn-danger" onClick={logout}>
+                      CERRAR SESIÓN
+                    </button>
+                  </span>
                 </li>
               </>
             )}
