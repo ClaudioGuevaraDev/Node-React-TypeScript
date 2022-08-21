@@ -1,0 +1,11 @@
+@api = http://localhost:4000/api/auth
+
+###
+POST {{api}}/register
+Content-Type: application/json
+
+{
+    "username": "Claudio Guevara",
+    "email": "claudio.guevara.dev@gmail.com",
+    "password": "claudio123"
+}

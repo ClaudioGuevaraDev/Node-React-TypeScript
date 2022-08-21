@@ -1,4 +1,4 @@
-FROM mysql
+FROM postgres
 
-ENV MYSQL_ROOT_PASSWORD = claudio
-ENV MYSQL_DATABASE = example
+ENV POSTGRES_PASSWORD=claudio123
+ENV POSTGRES_DB=example
