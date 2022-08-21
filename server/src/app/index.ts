@@ -15,9 +15,11 @@ app.set("port", PORT);
 // Middlewares
 app.use(cookieParser());
 app.use(morgan("dev"));
-app.use(cors({
-    origin: "http://localhost:5173"
-}));
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  })
+);
 app.use(express.json());
 
 // Routes

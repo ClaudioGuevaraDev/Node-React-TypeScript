@@ -2,8 +2,11 @@ import axios from "axios";
 import { FormEvent, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import useCheckUserLogged from "../hooks/useCheckUserLogged";
 
 function RegisterPage() {
+  useCheckUserLogged({ section: "register" })
+
   const [user, setUser] = useState({
     username: "",
     email: "",
