@@ -5,7 +5,7 @@ POST {{api}}/register
 Content-Type: application/json
 
 {
-    "username": "Claudio Guevara",
-    "email": "claudio.guevara.dev@gmail.com",
-    "password": "claudio123"
+    "username": "Juan Gonzalez",
+    "email": "juan@gmail.com",
+    "password": "juan123"
 }
