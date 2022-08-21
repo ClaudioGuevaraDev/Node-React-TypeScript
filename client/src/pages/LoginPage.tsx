@@ -1,6 +1,7 @@
 import axios from "axios";
 import { FormEvent, useState } from "react";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
   const [user, setUser] = useState({
@@ -8,12 +9,15 @@ function LoginPage() {
     password: "",
   });
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("/api/auth/login", user);
-      console.log(response);
+      const { data } = await axios.post("/api/auth/login", user);
+      toast.success(data.message);
+      navigate("/");
     } catch (error: any) {
       if (error.response.data.message) toast.error(error.response.data.message);
       setUser({

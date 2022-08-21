@@ -67,8 +67,8 @@ export const authLogin = async (req: Request, res: Response) => {
     const serializedToken = serialize("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 60,
+      sameSite: "strict",
+      maxAge: 60 * 60 * 24,
       path: "/",
     });
     res.setHeader("Set-Cookie", serializedToken);
@@ -76,5 +76,18 @@ export const authLogin = async (req: Request, res: Response) => {
     return res.status(200).json({ message: "Login successfully." });
   } catch (error) {
     return res.status(401).json({ message: "Login error." });
+  }
+};
+
+export const authCheckUserLogged = async (req: Request, res: Response) => {
+  const { token } = req.cookies;
+
+  if (!token) return res.status(200).json({ logged: false });
+
+  try {
+    jwt.verify(token, JWT_SECRET_KEY);
+    return res.status(200).json({ logged: true });
+  } catch (error) {
+    return res.status(200).json({ logged: false });
   }
 };

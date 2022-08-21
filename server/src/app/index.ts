@@ -1,6 +1,8 @@
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
+import cookieParser from "cookie-parser";
+
 import { PORT } from "../config";
 import { authRoutes } from "../routes";
 
@@ -11,8 +13,11 @@ const app = express();
 app.set("port", PORT);
 
 // Middlewares
+app.use(cookieParser());
 app.use(morgan("dev"));
-app.use(cors());
+app.use(cors({
+    origin: "http://localhost:5173"
+}));
 app.use(express.json());
 
 // Routes
